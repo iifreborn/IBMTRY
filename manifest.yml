@@ -1,0 +1,5 @@
+applications:
+  - path: .
+    name: tryTest
+    random-route: true
+    memory: 256M
