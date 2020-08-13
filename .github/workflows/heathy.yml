@@ -1,0 +1,23 @@
+name: IBM Cloud Heathy Check
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check heathy
+        env:
+          TOKEN: ${{ secrets.PTOKEN }}
+          IBM_APP_NAME: ${{ secrets.IBM_APP_NAME }}
+        run: |
+          if [ "$(curl https://$IBM_APP_NAME.us-south.cf.appdomain.cloud/)" != "Bad Request" ]; then \
+          curl -X POST https://api.github.com/repos/iifreborn/IBMTRY/dispatches \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token $TOKEN" \
+          --data '{"event_type": "restart"}'; fi 
+
+        
